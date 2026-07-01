@@ -28,6 +28,7 @@ export const generalFields = {
       helper.message("Invalid ObjectId format")
     );
   }),
+  otp: joi.string().pattern(/^\d{6}$/),
   gender: joi.string().valid(...Object.values(GenderEnum)),
   role: joi.string().valid(...Object.values(RoleEnum)),
   provider: joi.string().valid(...Object.values(ProviderEnum)),

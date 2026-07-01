@@ -7,11 +7,19 @@ import {
 } from "./Utils/Responses/error.response.js";
 import { successResponse } from "./Utils/Responses/success.response.js";
 import path from "node:path";
+// import { emailSubject, sendEmail } from "./Utils/email/email.utils.js";
 
 const bootstrap = async (app, express) => {
   app.use(express.json(), cors());
 
   await connectDB();
+
+  // await sendEmail({
+  //   to: "strongerm631@gmail.com",
+  //   subject: emailSubject.confirmEmail,
+  //   // html: `<h1 style="color: #09c">welcome ya handasa from SarahaApp</h1>`,
+  //   text: "894300"
+  // });
 
   app.get("/", (req, res) => {
     // return res.status(200).json({ message: "welcome" });

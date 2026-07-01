@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import {
   ACCESS_TOKEN_ADMIN_EXPIRES_IN,
@@ -44,8 +45,9 @@ export const getNewLoginCredentials = async (user) => {
       user.role == RoleEnum.ADMIN ? SignatureEnum.Admin : SignatureEnum.User,
   });
 
+  const jwtId = uuidv4();
   const accessToken = generateToken({
-    payload: { id: user._id },
+    payload: { id: user._id, jwtId },
     secretKey: signature.accessSignature,
     options: {
       expiresIn:
@@ -55,7 +57,7 @@ export const getNewLoginCredentials = async (user) => {
     },
   });
   const refreshToken = generateToken({
-    payload: { id: user._id },
+    payload: { id: user._id, jwtId },
     secretKey: signature.refreshSignature,
     options: {
       expiresIn:

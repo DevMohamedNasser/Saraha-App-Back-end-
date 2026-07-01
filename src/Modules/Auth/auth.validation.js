@@ -18,3 +18,31 @@ export const loginSchema = {
     password: generalFields.password.required(),
   }),
 };
+
+export const confirmEmailSchema = {
+  body: joi.object({
+    email: generalFields.email.required(),
+    otp: generalFields.otp.required(),
+  }),
+};
+
+export const resendOTPSchema = {
+  body: joi.object({
+    email: generalFields.email.required(),
+  }),
+};
+
+export const forgetPasswordSchema = {
+  body: joi.object({
+    email: generalFields.email.required(),
+  }),
+};
+
+export const resetPasswordSchema = {
+  body: joi.object({
+    email: generalFields.email.required(),
+    otp: generalFields.otp.required(),
+    newPassword: generalFields.password.required(),
+    confirmPassword: joi.ref("newPassword"),
+  }),
+};

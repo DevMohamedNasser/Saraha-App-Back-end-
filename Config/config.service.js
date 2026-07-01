@@ -30,3 +30,9 @@ export const ACCESS_TOKEN_ADMIN_EXPIRES_IN = Number(process.env.ACCESS_TOKEN_ADM
 export const REFRESH_TOKEN_ADMIN_EXPIRES_IN = Number(process.env.REFRESH_TOKEN_ADMIN_EXPIRES_IN);
 
 export const CLIENT_ID = process.env.CLIENT_ID;
+
+
+// Sending emails
+export const USER_EMAIL = process.env.USER_EMAIL;
+export const USER_PASS = process.env.USER_PASS;
+

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import {
-  getProfile,
-  updateCoverPictures,
-  updateProfilePic,
-} from "./user.service.js";
+import * as userService from "./user.service.js";
+// import {
+//   getProfile,
+//   updateCoverPictures,
+//   updateProfilePic,
+// } from "./user.service.js";
 import {
   authentication,
   authorization,
@@ -14,6 +15,8 @@ import {
   localFileMulter,
 } from "../../Utils/multer/local.multer.js";
 import { validateFileMagicNum } from "../../Middlewares/fileValidation.middleware.js";
+import { validation } from "../../Middlewares/validation.middleware.js";
+import * as userValidation from "./user.validation.js";
 
 const router = Router();
 
@@ -21,7 +24,7 @@ router.get(
   "/profile",
   authentication({ tokenType: tokenTypeEnum.Access }),
   authorization({ accessRoles: [RoleEnum.ADMIN, RoleEnum.USER] }),
-  getProfile,
+  userService.getProfile,
 );
 
 router.patch(
@@ -33,7 +36,7 @@ router.patch(
     validation: fileValidation.images,
   }).single("attachments"),
   validateFileMagicNum({ validation: fileValidation.images }),
-  updateProfilePic,
+  userService.updateProfilePic,
 );
 
 router.patch(
@@ -45,7 +48,15 @@ router.patch(
     validation: fileValidation.images,
   }).array("attachments", 5),
   validateFileMagicNum({ validation: fileValidation.images }),
-  updateCoverPictures,
+  userService.updateCoverPictures,
+);
+
+router.patch(
+  "/update-password",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+  validation(userValidation.updatePasswordSchema),
+  userService.updatePassword,
 );
 
 export default router;

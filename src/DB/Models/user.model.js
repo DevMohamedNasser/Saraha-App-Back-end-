@@ -49,8 +49,13 @@ const userSchema = new Schema(
       default: ProviderEnum.SYSTEM,
     },
     confirmEmail: Date,
+    confirmEmailOTP: String,
+    confirmEmailOTPExp: Date, // expires date
+    forgetPasswordOTP: String,
+    forgetPasswordOTPExp: Date,
     profilePic: String,
     coverPictures: [String],
+    changeCredentialsTime: Date, // if user logout from all devices assign it
   },
   {
     timestamps: true,

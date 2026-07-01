@@ -60,7 +60,7 @@ export const findOneAndUpdate = async ({
   model,
   filter,
   data,
-  options: {},
+  options = {},
 }) => {
   return await model.findOneAndUpdate(
     filter,
