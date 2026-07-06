@@ -1,22 +1,15 @@
 import { Router } from "express";
 import * as userService from "./user.service.js";
-// import {
-//   getProfile,
-//   updateCoverPictures,
-//   updateProfilePic,
-// } from "./user.service.js";
 import {
   authentication,
   authorization,
 } from "../../Middlewares/authentication.middleware.js";
 import { RoleEnum, tokenTypeEnum } from "../../Utils/enums/user.enum.js";
-import {
-  fileValidation,
-  localFileMulter,
-} from "../../Utils/multer/local.multer.js";
+import { localFileMulter } from "../../Utils/multer/local.multer.js";
 import { validateFileMagicNum } from "../../Middlewares/fileValidation.middleware.js";
 import { validation } from "../../Middlewares/validation.middleware.js";
 import * as userValidation from "./user.validation.js";
+import { fileValidation } from "../../Utils/multer/fileTypes.validation.multer.js";
 
 const router = Router();
 
@@ -38,6 +31,28 @@ router.patch(
   validateFileMagicNum({ validation: fileValidation.images }),
   userService.updateProfilePic,
 );
+
+router.patch(
+  "/upload-file-cloud",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+  localFileMulter({
+    customPath: "users",
+    validation: fileValidation.images,
+  }).single("attachments"),
+  validateFileMagicNum({ validation: fileValidation.images }),
+  userService.updateProfilePicCloud,
+);
+
+
+// router.patch(
+//   "/upload-file-cloud",
+//   authentication({ tokenType: tokenTypeEnum.Access }),
+//   authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+//   cloudFileMulter({ validation: fileValidation.images }).single("attachments"),
+//   validateFileMagicNumCloud({ validation: fileValidation.images }),
+//   userService.updateProfilePicCloud,
+// );
 
 router.patch(
   "/upload-cover-images",

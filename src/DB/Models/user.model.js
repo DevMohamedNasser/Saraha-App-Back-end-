@@ -5,6 +5,7 @@ import {
   ProviderEnum,
   RoleEnum,
 } from "../../Utils/enums/user.enum.js";
+import { userPicDetails } from "../../Utils/constants/userPicture.model.js";
 
 const userSchema = new Schema(
   {
@@ -56,6 +57,24 @@ const userSchema = new Schema(
     profilePic: String,
     coverPictures: [String],
     changeCredentialsTime: Date, // if user logout from all devices assign it
+    profilePicCloud: {
+      public_id: {
+        type: String,
+        default: function () {
+          return this.gender == GenderEnum.MALE
+            ? userPicDetails.publicIdMale
+            : userPicDetails.publicIdFemale;
+        },
+      },
+      secure_url: {
+        type: String,
+        default: function () {
+          return this.gender == GenderEnum.MALE
+            ? userPicDetails.secureUrlMale
+            : userPicDetails.secureUrlFemale;
+        },
+      },
+    },
   },
   {
     timestamps: true,

@@ -30,7 +30,7 @@ import { generateOTP } from "../../Utils/email/generateOTP.utils.js";
 import { emailEvents } from "../../Utils/events/email.events.js";
 
 export const signup = async (req, res) => {
-  const { userName, email, password, phone } = req.body;
+  const { userName, email, password, phone, gender } = req.body;
 
   // const validationRes = signupSchema.validate(req.body, { abortEarly: false });
   // if (validationRes.error)
@@ -60,6 +60,7 @@ export const signup = async (req, res) => {
         email,
         password: hashedPassword,
         phone: encryptedPhone,
+        gender,
         confirmEmailOTP: otpHashed,
         confirmEmailOTPExp: Date.now() + 5 * 1000 * 60, // From ms then sec to minutes
       },
@@ -235,10 +236,12 @@ export const login = async (req, res) => {
 
   const user = await findOne({
     model: userModel,
-    filter: { email, confirmEmail: { $exists: true } },
+    // filter: { email, confirmEmail: { $exists: true } },
+    filter: { email },
     // select: "userName email firstName lastName",
   });
   if (!user) throw NOtFoundException("User not found");
+  if (!user.confirmEmail) throw BadRequestException("Email not confirmed");
 
   const isMatch = await compareHash({
     plainText: password,
