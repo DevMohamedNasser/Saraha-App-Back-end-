@@ -75,6 +75,20 @@ const userSchema = new Schema(
         },
       },
     },
+    freezedBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    freezedAt: Date,
+    freezedByRole: {
+      type: Number,
+      enum: Object.values(RoleEnum),
+    },
+    restoredBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    restoredAt: Date,
   },
   {
     timestamps: true,

@@ -44,7 +44,6 @@ router.patch(
   userService.updateProfilePicCloud,
 );
 
-
 // router.patch(
 //   "/upload-file-cloud",
 //   authentication({ tokenType: tokenTypeEnum.Access }),
@@ -72,6 +71,37 @@ router.patch(
   authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
   validation(userValidation.updatePasswordSchema),
   userService.updatePassword,
+);
+
+router.patch(
+  "{/:userId}/freeze-acc",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+  validation(userValidation.freezeSchema),
+  userService.freezeAcc,
+);
+
+router.patch(
+  "{/:userId}/restore-acc",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+  validation(userValidation.restoreSchema),
+  userService.restoreAccount,
+);
+
+router.patch(
+  "/:userId/hard-delete-acc",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.ADMIN] }),
+  validation(userValidation.DeleteAccSchema),
+  userService.hardDeleteAcc,
+);
+
+router.get(
+  "/share-profile",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authorization({ accessRoles: [RoleEnum.USER, RoleEnum.ADMIN] }),
+  userService.shareProfile
 );
 
 export default router;
