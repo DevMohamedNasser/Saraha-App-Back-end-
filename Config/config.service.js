@@ -40,3 +40,7 @@ export const USER_PASS = process.env.USER_PASS;
 export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const API_KEY = process.env.API_KEY;
 export const API_SECRET = process.env.API_SECRET;
+
+
+// cors white list 
+export const WHITE_LIST = process.env.WHITE_LIST;

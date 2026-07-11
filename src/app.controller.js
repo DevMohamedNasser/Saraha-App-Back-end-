@@ -1,28 +1,29 @@
 import cors from "cors";
 import connectDB from "./DB/connection.js";
-import { userRouter, messageRouter, authRouter } from "./Modules/index.js";
+// import { userRouter, messageRouter, authRouter } from "./Modules/index.js";
 import {
   globalErrorHandler,
   NOtFoundException,
 } from "./Utils/Responses/error.response.js";
 import { successResponse } from "./Utils/Responses/success.response.js";
 import path from "node:path";
-// import { emailSubject, sendEmail } from "./Utils/email/email.utils.js";
+import { corsOptions } from "./Utils/cors/cors.utils.js";
+import helmet from "helmet";
+import { attachRouterWithLogger } from "./Utils/loggers/morgan.logger.js";
+import { routes } from "./Modules/routes.js";
 
 const bootstrap = async (app, express) => {
-  app.use(express.json(), cors());
+  app.use(express.json(), cors(corsOptions()), helmet());
+
+  // attachRouterWithLogger(app, "/api/v1/auth", authRouter, "auth.log");
+  // attachRouterWithLogger(app, "/api/v1/user", userRouter, "user.log");
+  routes.forEach(({ path, router, logFile }) =>
+    attachRouterWithLogger(app, path, router, logFile),
+  );
 
   await connectDB();
 
-  // await sendEmail({
-  //   to: "strongerm631@gmail.com",
-  //   subject: emailSubject.confirmEmail,
-  //   // html: `<h1 style="color: #09c">welcome ya handasa from SarahaApp</h1>`,
-  //   text: "894300"
-  // });
-
   app.get("/", (req, res) => {
-    // return res.status(200).json({ message: "welcome" });
     successResponse({
       statusCode: 201,
       res,
@@ -34,13 +35,12 @@ const bootstrap = async (app, express) => {
   // run static files
   app.use("/uploads", express.static(path.resolve("./src/uploads")));
 
-  app.use("/api/v1/user", userRouter);
-  app.use("/api/v1/message", messageRouter);
-  app.use("/api/v1/auth", authRouter);
+  // app.use("/api/v1/user", userRouter);
+  // app.use("/api/v1/message", messageRouter);
+  // app.use("/api/v1/auth", authRouter);
+  routes.forEach(({ path, router }) => app.use(path, router));
 
   app.all("/*dummy", (req, res) => {
-    // return res.status(404).json({ message: "Not found handler!!!" });
-    // successResponse({res, statusCode: 404, message: "Not found handler!!"});
     throw NOtFoundException("Not found handler!!");
   });
 
