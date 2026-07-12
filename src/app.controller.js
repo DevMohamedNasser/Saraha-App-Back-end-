@@ -11,9 +11,24 @@ import { corsOptions } from "./Utils/cors/cors.utils.js";
 import helmet from "helmet";
 import { attachRouterWithLogger } from "./Utils/loggers/morgan.logger.js";
 import { routes } from "./Modules/routes.js";
+import { customRateLimiter } from "./Middlewares/rateLimit.middleware.js";
+
+
+// import rateLimit from "express-rate-limit";
+// const limiter = rateLimit({
+//   windowMs: 1 * 1000 * 60,
+//   limit: 3,
+//   // handler: (req, res) => {
+//   //   return res.status(429).json({ message: "Too many requests, plz try later." });
+//   // },
+//   // message: "Too many request. plz try later.",
+//   // statusCode: 429,
+//   // legacyHeaders: false,
+//   standardHeaders: "draft-8",
+// });
 
 const bootstrap = async (app, express) => {
-  app.use(express.json(), cors(corsOptions()), helmet());
+  app.use(express.json(), cors(corsOptions()), helmet(), customRateLimiter());
 
   // attachRouterWithLogger(app, "/api/v1/auth", authRouter, "auth.log");
   // attachRouterWithLogger(app, "/api/v1/user", userRouter, "user.log");
