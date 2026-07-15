@@ -111,6 +111,6 @@ userSchema
     return this.firstName + " " + this.lastName;
   });
 
-const userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default userModel;
