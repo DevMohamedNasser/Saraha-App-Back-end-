@@ -1,6 +1,10 @@
 import { OAuth2Client } from "google-auth-library";
 
-import { CLIENT_ID } from "../../../Config/config.service.js";
+import {
+  ACCESS_TOKEN_ADMIN_EXPIRES_IN,
+  ACCESS_TOKEN_USER_EXPIRES_IN,
+  CLIENT_ID,
+} from "../../../Config/config.service.js";
 import {
   create,
   findByIdAndUpdate,
@@ -24,10 +28,15 @@ import {
 } from "../../Utils/Security/hash.security.js";
 
 import { getNewLoginCredentials } from "../../Utils/Tokens/token.js";
-import { LogoutTypeEnum, ProviderEnum } from "../../Utils/enums/user.enum.js";
+import {
+  LogoutTypeEnum,
+  ProviderEnum,
+  RoleEnum,
+} from "../../Utils/enums/user.enum.js";
 import tokenModel from "../../DB/Models/token.model.js";
 import { generateOTP } from "../../Utils/email/generateOTP.utils.js";
 import { emailEvents } from "../../Utils/events/email.events.js";
+import { revokeTokenKey, set } from "../../DB/redis.repo.js";
 
 export const signup = async (req, res) => {
   const { userName, email, password, phone, gender } = req.body;
@@ -381,6 +390,35 @@ export const logout = async (req, res) => {
   return successResponse({
     res,
     statusCode: status,
+    message: "Logout successfully",
+  });
+};
+
+export const logoutWithRedis = async (req, res) => {
+  const { user, decoded } = req;
+  await set({
+    key: revokeTokenKey({ userId: user._id, jti: decoded.jti }),
+    value: decoded.jti,
+    ttl:
+      decoded.iat +
+      (user.role == RoleEnum.USER
+        ? ACCESS_TOKEN_USER_EXPIRES_IN
+        : ACCESS_TOKEN_ADMIN_EXPIRES_IN),
+  });
+
+  console.log({
+    ttl:
+      decoded.iat + user.role == RoleEnum.USER
+        ? ACCESS_TOKEN_USER_EXPIRES_IN
+        : ACCESS_TOKEN_ADMIN_EXPIRES_IN,
+  });
+  console.log(ACCESS_TOKEN_USER_EXPIRES_IN);
+  console.log(decoded.iat + ACCESS_TOKEN_USER_EXPIRES_IN);
+  console.log(decoded.iat);
+
+  successResponse({
+    res,
+    statusCode: 200,
     message: "Logout successfully",
   });
 };

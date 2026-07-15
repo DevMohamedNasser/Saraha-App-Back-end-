@@ -1,8 +1,10 @@
 import { findById, findOne } from "../DB/db.repo.js";
 import tokenModel from "../DB/Models/token.model.js";
 import userModel from "../DB/Models/user.model.js";
+import { get, revokeTokenKey } from "../DB/redis.repo.js";
 import { SignatureEnum, tokenTypeEnum } from "../Utils/enums/user.enum.js";
 import {
+  BadRequestException,
   ForbiddenException,
   NOtFoundException,
   UnauthorizedException,
@@ -31,6 +33,11 @@ export const decodedToken = async ({
         ? signature.accessSignature
         : signature.refreshSignature,
   });
+
+  const isRevoked = await get({
+    key: revokeTokenKey({ userId: decoded.id, jti: decoded.jti }),
+  });
+  if (isRevoked) throw BadRequestException("Token has been revoked");
 
   // check if token is revoked (logout only me)
   if (await findOne({ model: tokenModel, filter: { jti: decoded.jwtId } }))

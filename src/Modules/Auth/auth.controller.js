@@ -52,4 +52,10 @@ router.post(
   authService.logout,
 );
 
+router.post(
+  "/logout-with-redis",
+  authentication({ tokenType: tokenTypeEnum.Access }),
+  authService.logoutWithRedis,
+);
+
 export default router;

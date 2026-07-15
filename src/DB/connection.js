@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { DB_URI } from "../../Config/config.service.js";
+import chalk from "chalk";
 
 const connectDB = async () => {
     try {
@@ -12,7 +13,7 @@ const connectDB = async () => {
         });
 
     } catch (error) {
-        console.log("Error connecting DB", error.message);
+        console.log(chalk.red("Error connecting DB", error.message));
     }
 }
 

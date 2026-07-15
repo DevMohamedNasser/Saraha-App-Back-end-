@@ -20,7 +20,7 @@ export const generalFields = {
   confirmPassword: joi.ref("password"),
   phone: joi
     .string()
-    .pattern(/^(\+20|020|0)?1[0125][0-9]{8}$/)
+    .pattern(/^(?:0|\+20|020)1[0125][\d]{8}$/)
     .message({ "string.pattern.base": "Invalid phone number format" }),
   id: joi.string().custom((value, helper) => {
     return (

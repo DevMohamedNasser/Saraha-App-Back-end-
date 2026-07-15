@@ -12,6 +12,7 @@ import helmet from "helmet";
 import { attachRouterWithLogger } from "./Utils/loggers/morgan.logger.js";
 import { routes } from "./Modules/routes.js";
 import { customRateLimiter } from "./Middlewares/rateLimit.middleware.js";
+import { clientRedisConnection } from "./DB/redis.connection.js";
 
 
 // import rateLimit from "express-rate-limit";
@@ -37,6 +38,7 @@ const bootstrap = async (app, express) => {
   );
 
   await connectDB();
+  await clientRedisConnection();
 
   app.get("/", (req, res) => {
     successResponse({

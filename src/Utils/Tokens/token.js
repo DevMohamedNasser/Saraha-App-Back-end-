@@ -54,6 +54,7 @@ export const getNewLoginCredentials = async (user) => {
         user.role == RoleEnum.USER
           ? ACCESS_TOKEN_USER_EXPIRES_IN
           : ACCESS_TOKEN_ADMIN_EXPIRES_IN,
+        jwtid: jwtId // adds jti in token
     },
   });
   const refreshToken = generateToken({

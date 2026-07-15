@@ -17,20 +17,27 @@ export const DB_URI = process.env.DB_URI;
 export const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
 export const ENC_KEY = process.env.ENC_KEY;
 
-
 // Tokens
 export const ACCESS_TOKEN_USER_SECRET = process.env.ACCESS_TOKEN_USER_SECRET;
 export const REFRESH_TOKEN_USER_SECRET = process.env.REFRESH_TOKEN_USER_SECRET;
-export const ACCESS_TOKEN_USER_EXPIRES_IN = Number(process.env.ACCESS_TOKEN_USER_EXPIRES_IN);
-export const REFRESH_TOKEN_USER_EXPIRES_IN = Number(process.env.REFRESH_TOKEN_USER_EXPIRES_IN);
+export const ACCESS_TOKEN_USER_EXPIRES_IN = Number(
+  process.env.ACCESS_TOKEN_USER_EXPIRES_IN,
+);
+export const REFRESH_TOKEN_USER_EXPIRES_IN = Number(
+  process.env.REFRESH_TOKEN_USER_EXPIRES_IN,
+);
 
 export const ACCESS_TOKEN_ADMIN_SECRET = process.env.ACCESS_TOKEN_ADMIN_SECRET;
-export const REFRESH_TOKEN_ADMIN_SECRET = process.env.REFRESH_TOKEN_ADMIN_SECRET;
-export const ACCESS_TOKEN_ADMIN_EXPIRES_IN = Number(process.env.ACCESS_TOKEN_ADMIN_EXPIRES_IN);
-export const REFRESH_TOKEN_ADMIN_EXPIRES_IN = Number(process.env.REFRESH_TOKEN_ADMIN_EXPIRES_IN);
+export const REFRESH_TOKEN_ADMIN_SECRET =
+  process.env.REFRESH_TOKEN_ADMIN_SECRET;
+export const ACCESS_TOKEN_ADMIN_EXPIRES_IN = Number(
+  process.env.ACCESS_TOKEN_ADMIN_EXPIRES_IN,
+);
+export const REFRESH_TOKEN_ADMIN_EXPIRES_IN = Number(
+  process.env.REFRESH_TOKEN_ADMIN_EXPIRES_IN,
+);
 
 export const CLIENT_ID = process.env.CLIENT_ID;
-
 
 // Sending emails
 export const USER_EMAIL = process.env.USER_EMAIL;
@@ -41,6 +48,10 @@ export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const API_KEY = process.env.API_KEY;
 export const API_SECRET = process.env.API_SECRET;
 
-
-// cors white list 
+// cors white list
 export const WHITE_LIST = process.env.WHITE_LIST;
+
+// Redis Connection
+export const REDIS_URI = process.env.REDIS_URI;
+export const UPSTASH_REDIS_REST_URL = process.env.UPSTASH_REDIS_REST_URL;
+export const UPSTASH_REDIS_REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
