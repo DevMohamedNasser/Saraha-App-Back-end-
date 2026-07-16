@@ -9,3 +9,15 @@ export const sendMessageSchema = {
     receiverId: generalFields.id.required(),
   }),
 };
+
+export const toggleReadSchema = {
+  params: joi.object({
+    messageId: generalFields.id.required(),
+  }),
+};
+
+export const toggleFavSchema = {
+  params: joi.object({
+    messageId: generalFields.id.required(),
+  }),
+};
