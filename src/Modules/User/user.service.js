@@ -130,9 +130,6 @@ export const freezeAcc = async (req, res) => {
   const { userId } = req.params;
   const targetUserId = userId || req.user._id;
 
-  // console.log("decoded", req.decoded);
-  // console.log("user", req.user);
-
   if (req.user.freezedAt) throw BadRequestException("Ur account is freezed");
 
   if (

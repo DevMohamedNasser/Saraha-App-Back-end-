@@ -1,9 +1,6 @@
 import dotenv from "dotenv";
 import { resolve } from "node:path";
 
-// export const NODE_ENV = process.env.NODE_ENV || "development";
-// console.log(NODE_ENV)
-
 const envPath = {
   development: "dev.env",
   production: "prod.env",

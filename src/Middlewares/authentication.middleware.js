@@ -70,7 +70,6 @@ export const authentication = ({ tokenType = tokenTypeEnum.Access }) => {
 
 export const authorization = ({ accessRoles = [] }) => {
   return async (req, res, next) => {
-    // console.log(req.user)
     if (!accessRoles.includes(req.user.role))
       throw ForbiddenException("Unauthorized access");
 
